@@ -31,7 +31,9 @@ class DoubleStack:
         if self.head1 == -1:
             print("empty queue")
             return
+        r = self.stack[self.head1]
         self.head1 -= 1
+        return r
 
     def push2(self, v):
         if self.head1 == self.head2:
@@ -45,7 +47,9 @@ class DoubleStack:
         if self.head2 == self.size:
             print("empty queue")
             return
+        r = self.stack[self.head2]
         self.head2 += 1
+        return r
 
     def print(self):
         print(self.stack)
