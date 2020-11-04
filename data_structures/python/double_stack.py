@@ -6,15 +6,15 @@
 # ^                                   ^
 # head 1 starts at -1                 head 2 starts at n
 #
-# If head 1 == head 2, queue is full
-# Queue 1 grows up, queue 2 grows down
-# head 1 = -1 means empty queue 1, head 2 = n means empty queue 2
+# If head 1 == head 2, array is full
+# Stack 1 grows up, stack 2 grows down
+# head 1 = -1 means empty stack 1, head 2 = n means empty stack 2
 
-class DoubleQueue:
+class DoubleStack:
 
     def __init__(self, size):
         self.size = size
-        self.queue = [0] * size
+        self.stack = [0] * size
         self.head1 = -1
         self.head2 = size
 
@@ -24,7 +24,7 @@ class DoubleQueue:
             print("full queue")
             return
         self.head1 += 1
-        self.queue[self.head1] = v
+        self.stack[self.head1] = v
         
 
     def pop1(self):
@@ -38,7 +38,7 @@ class DoubleQueue:
             print("full queue")
             return
         self.head2 -= 1
-        self.queue[self.head2] = v
+        self.stack[self.head2] = v
        
 
     def pop2(self):
@@ -48,11 +48,11 @@ class DoubleQueue:
         self.head2 += 1
 
     def print(self):
-        print(self.queue)
-        print("Queue 1 head is at: ", self.head1)
-        print("Queue 2 head is at: ", self.head2)
+        print(self.stack)
+        print("Stack 1 head is at: ", self.head1)
+        print("Stack 2 head is at: ", self.head2)
 
-q = DoubleQueue(10)
+q = DoubleStack(10)
 
 q.push1(5)
 q.push1(5)
