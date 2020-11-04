@@ -12,9 +12,7 @@ def binary_search(arr, v):
 
         return binary_search(arr[mid:], v)
 
-    else:
-
-        return mid
+    return mid
 
 
 lst = [1,4,7,8,9,11,45]
