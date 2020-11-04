@@ -1,20 +1,18 @@
 
-def binary_search(arr, v):
+def binary_search2(arr, start, end, value):
 
-    mid = len(arr) // 2
+    mid = (end + start) // 2
 
+    if arr[mid] > value:
 
-    if arr[mid] > v:
+        return binary_search2(arr, start, mid, value)
 
-        return binary_search(arr[:mid], v)
+    elif arr[mid] < value:
 
-    elif arr[mid] < v:
-
-        return binary_search(arr[mid:], v)
+        return binary_search2(arr, mid+1, end, value)
 
     return mid
 
-
 lst = [1,4,7,8,9,11,45]
 
-print(binary_search(lst, 4))
+print(binary_search2(lst, 0, len(lst), 45))
