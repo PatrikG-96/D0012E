@@ -21,6 +21,11 @@ class Graph:
         self.adj_matrix[v1][v2] = weight
         self.adj_matrix[v2][v1] = weight
 
+    def set_weight(self, v1, v2, weight):
+        v1-=1
+        v2-=1
+        self.adj_matrix[v1][v2] = weight
+
     def nodes_connected(self, v1, v2):
         if self.adj_matrix[v1][v2] > 0:
             return True
