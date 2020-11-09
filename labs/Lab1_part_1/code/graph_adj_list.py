@@ -1,3 +1,5 @@
+import random 
+
 class EdgeNode:
 
     def __init__(self, vertex, weight):
@@ -60,7 +62,6 @@ class Graph:
             while node!=None:
                 vertex = node.vertex
                 if not visited[vertex-1]:
-                    print("Visiting vertex: ", vertex)
                     visited[vertex-1]=True
                     count += 1
                 node = node.next
@@ -69,6 +70,29 @@ class Graph:
             return True
         return False
 
+def generate_graph(vertices, edges_excess, min_weight, max_weight):
+    G = Graph(vertices)
+
+    vertex_count = 1
+    for i in range(2,vertices+1):
+        vertex = random.randint(1, vertex_count)
+        weight = random.randint(min_weight, max_weight)
+        #print("Creating edge from ", i, " to ", vertex, " with weight ", weight)
+        G.add_edge(i, vertex, weight)
+        vertex_count += 1
+
+    while edges_excess >= 0:
+        src_vertex = random.randint(1, vertices)
+        dst_vertex = random.randint(1, vertices)
+        if src_vertex == dst_vertex:
+            continue
+        weight = random.randint(min_weight, max_weight)
+        G.add_edge(src_vertex, dst_vertex, weight)
+        edges_excess -= 1
+
+    return G
+
+
 g = Graph(5)
 
 g.add_edge(1,2,10)
@@ -76,7 +100,10 @@ g.add_edge(2,3,10)
 g.add_edge(3,4,10)
 #g.add_edge(4,5,10)
 
-print(g.nodes_connected(2,1))
+#print(g.nodes_connected(2,1))
 
-print(g.is_connected())
+#print(g.is_connected())
         
+g2 = generate_graph(1000, 1000, 1, 10)
+
+print(g2.is_connected())
