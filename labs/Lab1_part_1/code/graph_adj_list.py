@@ -1,4 +1,5 @@
 import random 
+import collections
 
 class EdgeNode:
 
@@ -48,37 +49,17 @@ class Graph:
                 node.weight = weight
                 return
             node = node.next
-    
-    def dfs(self, vertex, visited, counter):
-
-        visited[vertex] = True
-        node = self.adj_list[vertex]
-        while node!=None:
-           
-            if not visited[node.vertex-1]:
-                counter = 1 + self.dfs(node.vertex-1, visited, counter)
-            node = node.next
-        
-        return counter
-
-
-    def is_connected_rec(self):
-        
-        visited = [False] * self.vertices
-        if self.dfs(0,visited, 0) + 1 == self.vertices:
-            return True
-        return False
         
     # O(V+E)
     def is_connected(self):
 
+        #Creating array takes O(V) time
         visited = [False] * self.vertices
         
         count = 0
-        counter = 0
-        for i in range(0, self.vertices):
 
-            counter += 1
+        #Loop through all vertices takes O(E) time
+        for i in range(0, self.vertices):
             node = self.adj_list[i]
             
             while node!=None:
@@ -87,9 +68,8 @@ class Graph:
                     visited[vertex-1]=True
                     count += 1
                 node = node.next
-                counter += 1
 
-        print("Iterations: ", counter)
+        #Total time complexity is O(V+E)
         if count == self.vertices:
             return True
         return False
@@ -101,7 +81,6 @@ def generate_graph(vertices, edges_excess, min_weight, max_weight):
     for i in range(2,vertices+1):
         vertex = random.randint(1, vertex_count)
         weight = random.randint(min_weight, max_weight)
-        #print("Creating edge from ", i, " to ", vertex, " with weight ", weight)
         G.add_edge(i, vertex, weight)
         vertex_count += 1
 
@@ -117,19 +96,26 @@ def generate_graph(vertices, edges_excess, min_weight, max_weight):
     return G
 
 
+# Connected graph example
 g = Graph(5)
-
 g.add_edge(1,2,10)
 g.add_edge(2,3,10)
 g.add_edge(3,4,10)
 g.add_edge(4,5,10)
 
-#print(g.nodes_connected(2,1))
+print("Node 2 and 1 connected? ", g.nodes_connected(2,1))
+print("Is g a connected graph? ",g.is_connected())
 
-#print(g.is_connected())
-        
+#Disconnected graph example
+g1 = Graph(5)
+
+g1.add_edge(1,2,10)
+g1.add_edge(2,3,10)
+g1.add_edge(3,4,10)
+
+print("Is g1 a connected graph? ",g1.is_connected())
+
+#Generated connected graph
 g2 = generate_graph(1000, 1000, 1, 10)
 
-print(g.is_connected_rec())
-print("Recursive result: ", g2.is_connected_rec())
-print(g2.is_connected())
+print("Is g2 a connected graph? ", g2.is_connected())

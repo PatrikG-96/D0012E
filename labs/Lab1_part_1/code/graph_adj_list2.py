@@ -1,103 +1,52 @@
-import random 
-
-class EdgeNode:
-
-    def __init__(self, vertex, weight):
-        self.weight = weight
-        self.vertex = vertex
-        self.next = None
+import random
 
 class Graph:
 
     def __init__(self, vertices):
+        self.adj_matrix = [[0 for i in range(vertices)] for j in range(vertices)]
         self.vertices = vertices
-        self.adj_list = [None] * vertices
-        self.dbg_count = 0
+    
 
-    #O(1)
     def add_edge(self, v1, v2, weight):
-
-        if v1 > self.vertices or v2 > self.vertices or weight < 0:
+        v1-=1
+        v2-=1
+        if self.adj_matrix[v1][v2] != 0 or weight < 0:
             return
 
-        node = EdgeNode(v2, weight)
-        node.next = self.adj_list[v1-1]
-        self.adj_list[v1-1] = node
-    # O(V)
-    def nodes_connected(self, v1, v2):
-        iterator = self.adj_list[v1-1]
-        while iterator!=None:
-            if iterator.vertex == v2:
-                return True
-            iterator = iterator.next
-        iterator = self.adj_list[v2-1]
-        while iterator!=None:
-            if iterator.vertex == v1:
-                return True
-            iterator = iterator.next
-        return False
-    # O(V) 
+        self.adj_matrix[v1][v2] = weight
+        self.adj_matrix[v2][v1] = weight
+
     def set_weight(self, v1, v2, weight):
+        v1-=1
+        v2-=1
+        self.adj_matrix[v1][v2] = weight
 
-        node = self.adj_list[v1-1]
-
-        while node!=None:
-
-            if node.vertex == v2:
-                node.weight = weight
-                return
-            node = node.next
-    
-    def dfs(self, vertex, visited, counter):
-        
-        print("DFS for vertex ", vertex)
-
-        visited[vertex] = True
-
-        node = self.adj_list[vertex]
-
-        while node!=None:
-            if not visited[node.vertex-1]:
-                counter+=1
-                return self.dfs(node.vertex, visited, counter)
-            node = node.next
-
-        return counter == self.vertices
-        
-
-    def is_connected_rec(self):
-        
-        visited = [False] * self.vertices
-
-        return self.dfs(0, visited, 0)
-        
-    # O(V+E)
-    def is_connected(self):
-
-        visited = [False] * self.vertices
-        
-        count = 0
-        counter = 0
-        for i in range(0, self.vertices):
-
-            counter += 1
-            node = self.adj_list[i]
-            
-            while node!=None:
-                vertex = node.vertex
-                if not visited[vertex-1]:
-                    visited[vertex-1]=True
-                    count += 1
-                node = node.next
-                counter += 1
-
-        print("Iterations: ", counter)
-        print("Count=", count)
-        if count+1 == self.vertices:
+    def nodes_connected(self, v1, v2):
+        if self.adj_matrix[v1][v2] > 0:
             return True
         return False
 
-def generate_graph(vertices, edges_excess, min_weight, max_weight):
+    def is_connected(self):
+
+        visited = [False] * self.vertices
+        count = 0
+        for i in range(self.vertices):
+
+            for j in range(self.vertices):
+
+                if not visited[j] and self.adj_matrix[i][j] > 0:
+                    visited[j] = True
+                    count+=1
+        if count == self.vertices:
+            return True
+        return False
+
+    def print(self):
+
+        for i in range(self.vertices):
+            print(self.adj_matrix[i])
+
+def generate_graph(vertices, extra_edges, min_weight, max_weight):
     G = Graph(vertices)
 
     vertex_count = 1
@@ -108,31 +57,23 @@ def generate_graph(vertices, edges_excess, min_weight, max_weight):
         G.add_edge(i, vertex, weight)
         vertex_count += 1
 
-    while edges_excess >= 0:
+    while extra_edges >= 0:
         src_vertex = random.randint(1, vertices)
         dst_vertex = random.randint(1, vertices)
         if src_vertex == dst_vertex:
             continue
         weight = random.randint(min_weight, max_weight)
         G.add_edge(src_vertex, dst_vertex, weight)
-        edges_excess -= 1
+        extra_edges -= 1
 
     return G
 
-
 g = Graph(5)
+g.add_edge(1,2,5)
+g.add_edge(2,3,5)
+g.add_edge(3,4,5)
+g.add_edge(4,5,5)
 
-g.add_edge(1,2,10)
-g.add_edge(2,3,10)
-g.add_edge(3,4,10)
-g.add_edge(4,5,10)
+g2 = generate_graph(200, 50, 1, 10)
 
-#print(g.nodes_connected(2,1))
-
-#print(g.is_connected())
-        
-g2 = generate_graph(1000, 1000, 1, 10)
-
-print(g.is_connected_rec())
-print(g2.is_connected())
 print(g.is_connected())

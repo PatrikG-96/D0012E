@@ -68,12 +68,27 @@ def generate_graph(vertices, extra_edges, min_weight, max_weight):
 
     return G
 
+
+# Connected graph example
 g = Graph(5)
-g.add_edge(1,2,5)
-g.add_edge(2,3,5)
-g.add_edge(3,4,5)
-g.add_edge(4,5,5)
+g.add_edge(1,2,10)
+g.add_edge(2,3,10)
+g.add_edge(3,4,10)
+g.add_edge(4,5,10)
 
-g2 = generate_graph(200, 50, 1, 10)
+print("Node 2 and 1 connected? ", g.nodes_connected(2,1))
+print("Is g a connected graph? ",g.is_connected())
 
-print(g.is_connected())
+#Disconnected graph example
+g1 = Graph(5)
+
+g1.add_edge(1,2,10)
+g1.add_edge(2,3,10)
+g1.add_edge(3,4,10)
+
+print("Is g1 a connected graph? ",g1.is_connected())
+
+#Generated connected graph
+g2 = generate_graph(1000, 1000, 1, 10)
+
+print("Is g2 a connected graph? ", g2.is_connected())
