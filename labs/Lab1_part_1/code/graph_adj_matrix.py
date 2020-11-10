@@ -26,6 +26,7 @@ class Graph:
             return True
         return False
 
+    
     def is_connected(self):
 
         visited = [False] * self.vertices
@@ -37,6 +38,7 @@ class Graph:
                 if not visited[j] and self.adj_matrix[i][j] > 0:
                     visited[j] = True
                     count+=1
+        print(visited)
         if count == self.vertices:
             return True
         return False
@@ -91,4 +93,17 @@ print("Is g1 a connected graph? ",g1.is_connected())
 #Generated connected graph
 g2 = generate_graph(1000, 1000, 1, 10)
 
-print("Is g2 a connected graph? ", g2.is_connected())
+#print("Is g2 a connected graph? ", g2.is_connected())
+
+g3 = Graph(7)
+
+g3.add_edge(1,2,0)
+g3.add_edge(2,3,0)
+g3.add_edge(3,1,0)
+g3.add_edge(4,5,0)
+g3.add_edge(5,6,0)
+g3.add_edge(6,4,0)
+g3.add_edge(6,7,0)
+g3.add_edge(7,1,0)
+
+print(g3.is_connected())

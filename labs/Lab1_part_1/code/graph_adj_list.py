@@ -50,30 +50,26 @@ class Graph:
                 return
             node = node.next
         
-    # O(V+E)
-    def is_connected(self):
 
-        #Creating array takes O(V) time
+    def is_connected_bfs(self):
+        fifo = collections.deque()
         visited = [False] * self.vertices
-        
+
+        fifo.append(0)
         count = 0
+        while len(fifo) > 0:
+            vertex = fifo.popleft()
+            node = self.adj_list[vertex]
+            if not visited[vertex]:
+                visited[vertex] = True
+                count += 1
+                while node!=None:
+                    fifo.append(node.vertex-1)
+                    node = node.next
+        
+        return count == self.vertices
 
-        #Loop through all vertices takes O(E) time
-        for i in range(0, self.vertices):
-            node = self.adj_list[i]
-            
-            while node!=None:
-                vertex = node.vertex
-                if not visited[vertex-1]:
-                    visited[vertex-1]=True
-                    count += 1
-                node = node.next
-
-        #Total time complexity is O(V+E)
-        if count == self.vertices:
-            return True
-        return False
-
+    
 def generate_graph(vertices, edges_excess, min_weight, max_weight):
     G = Graph(vertices)
 
@@ -104,7 +100,7 @@ g.add_edge(3,4,10)
 g.add_edge(4,5,10)
 
 print("Node 2 and 1 connected? ", g.nodes_connected(2,1))
-print("Is g a connected graph? ",g.is_connected())
+print("Is g a connected graph? ",g.is_connected_bfs())
 
 #Disconnected graph example
 g1 = Graph(5)
@@ -113,9 +109,23 @@ g1.add_edge(1,2,10)
 g1.add_edge(2,3,10)
 g1.add_edge(3,4,10)
 
-print("Is g1 a connected graph? ",g1.is_connected())
+print("Is g1 a connected graph? ",g1.is_connected_bfs())
 
 #Generated connected graph
 g2 = generate_graph(1000, 1000, 1, 10)
 
-print("Is g2 a connected graph? ", g2.is_connected())
+print("Is g2 a connected graph? ", g2.is_connected_bfs())
+
+
+g3 = Graph(7)
+
+g3.add_edge(1,2,0)
+g3.add_edge(2,3,0)
+g3.add_edge(3,1,0)
+g3.add_edge(4,5,0)
+g3.add_edge(5,6,0)
+g3.add_edge(6,4,0)
+g3.add_edge(6,7,0)
+#g3.add_edge(7,1,0)
+
+print(g3.is_connected_bfs())

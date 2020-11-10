@@ -9,7 +9,7 @@ class Graph:
 
     def add_edge(self, v1, v2, weight):
         v1-=1
-        v2-=1
+        v2-=13
         if self.adj_matrix[v1][v2] != 0 or weight < 0:
             return
 
