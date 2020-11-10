@@ -1,4 +1,5 @@
 import random
+import collections
 
 class Graph:
 
@@ -26,49 +27,23 @@ class Graph:
             return True
         return False
 
-    
-    def is_connected(self):
-
+    def is_connected_bfs(self):
+        fifo = collections.deque()
         visited = [False] * self.vertices
+
+        fifo.append(0)
         count = 0
-        for i in range(self.vertices):
+        while len(fifo) > 0:
+            #print(fifo)
+            vertex = fifo.popleft()
+            if not visited[vertex]:
+                visited[vertex] = True
+                count += 1
+                for i in range(self.vertices):
+                    if self.adj_matrix[vertex][i] > 0:
+                        fifo.append(i)
 
-            for j in range(self.vertices):
-
-                if not visited[j] and self.adj_matrix[i][j] > 0:
-                    visited[j] = True
-                    count+=1
-        print(visited)
-        if count == self.vertices:
-            return True
-        return False
-
-    def print(self):
-
-        for i in range(self.vertices):
-            print(self.adj_matrix[i])
-
-def generate_graph(vertices, extra_edges, min_weight, max_weight):
-    G = Graph(vertices)
-
-    vertex_count = 1
-    for i in range(2,vertices+1):
-        vertex = random.randint(1, vertex_count)
-        weight = random.randint(min_weight, max_weight)
-        #print("Creating edge from ", i, " to ", vertex, " with weight ", weight)
-        G.add_edge(i, vertex, weight)
-        vertex_count += 1
-
-    while extra_edges >= 0:
-        src_vertex = random.randint(1, vertices)
-        dst_vertex = random.randint(1, vertices)
-        if src_vertex == dst_vertex:
-            continue
-        weight = random.randint(min_weight, max_weight)
-        G.add_edge(src_vertex, dst_vertex, weight)
-        extra_edges -= 1
-
-    return G
+        return count == self.vertices
 
 
 # Connected graph example
@@ -79,7 +54,7 @@ g.add_edge(3,4,10)
 g.add_edge(4,5,10)
 
 print("Node 2 and 1 connected? ", g.nodes_connected(2,1))
-print("Is g a connected graph? ",g.is_connected())
+print("Is g a connected graph? ",g.is_connected_bfs())
 
 #Disconnected graph example
 g1 = Graph(5)
@@ -88,22 +63,18 @@ g1.add_edge(1,2,10)
 g1.add_edge(2,3,10)
 g1.add_edge(3,4,10)
 
-print("Is g1 a connected graph? ",g1.is_connected())
-
-#Generated connected graph
-g2 = generate_graph(1000, 1000, 1, 10)
-
-#print("Is g2 a connected graph? ", g2.is_connected())
+print("Is g1 a connected graph? ",g1.is_connected_bfs())
+g1.is_connected_bfs()
 
 g3 = Graph(7)
 
-g3.add_edge(1,2,0)
-g3.add_edge(2,3,0)
-g3.add_edge(3,1,0)
-g3.add_edge(4,5,0)
-g3.add_edge(5,6,0)
-g3.add_edge(6,4,0)
-g3.add_edge(6,7,0)
-g3.add_edge(7,1,0)
+g3.add_edge(1,2,5)
+g3.add_edge(2,3,5)
+g3.add_edge(3,1,5)
+g3.add_edge(4,5,5)
+g3.add_edge(5,6,5)
+g3.add_edge(6,4,5)
+g3.add_edge(6,7,5)
+#g3.add_edge(7,1,5)
 
-print(g3.is_connected())
+print("Is g3 a connected graph? ",g3.is_connected_bfs())

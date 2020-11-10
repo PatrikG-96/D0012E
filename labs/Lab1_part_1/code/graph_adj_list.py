@@ -69,28 +69,6 @@ class Graph:
         
         return count == self.vertices
 
-    
-def generate_graph(vertices, edges_excess, min_weight, max_weight):
-    G = Graph(vertices)
-
-    vertex_count = 1
-    for i in range(2,vertices+1):
-        vertex = random.randint(1, vertex_count)
-        weight = random.randint(min_weight, max_weight)
-        G.add_edge(i, vertex, weight)
-        vertex_count += 1
-
-    while edges_excess >= 0:
-        src_vertex = random.randint(1, vertices)
-        dst_vertex = random.randint(1, vertices)
-        if src_vertex == dst_vertex:
-            continue
-        weight = random.randint(min_weight, max_weight)
-        G.add_edge(src_vertex, dst_vertex, weight)
-        edges_excess -= 1
-
-    return G
-
 
 # Connected graph example
 g = Graph(5)
@@ -110,12 +88,6 @@ g1.add_edge(2,3,10)
 g1.add_edge(3,4,10)
 
 print("Is g1 a connected graph? ",g1.is_connected_bfs())
-
-#Generated connected graph
-g2 = generate_graph(1000, 1000, 1, 10)
-
-print("Is g2 a connected graph? ", g2.is_connected_bfs())
-
 
 g3 = Graph(7)
 
