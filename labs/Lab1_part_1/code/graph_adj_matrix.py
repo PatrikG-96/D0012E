@@ -1,9 +1,4 @@
-class EdgeNode:
-
-    def __init__(self, vertex, weigth):
-        self.vertex = vertex
-        self.weight = weigth
-        self.next = None
+import random
 
 class Graph:
 
@@ -51,14 +46,34 @@ class Graph:
         for i in range(self.vertices):
             print(self.adj_matrix[i])
 
+def generate_graph(vertices, extra_edges, min_weight, max_weight):
+    G = Graph(vertices)
+
+    vertex_count = 1
+    for i in range(2,vertices+1):
+        vertex = random.randint(1, vertex_count)
+        weight = random.randint(min_weight, max_weight)
+        #print("Creating edge from ", i, " to ", vertex, " with weight ", weight)
+        G.add_edge(i, vertex, weight)
+        vertex_count += 1
+
+    while extra_edges >= 0:
+        src_vertex = random.randint(1, vertices)
+        dst_vertex = random.randint(1, vertices)
+        if src_vertex == dst_vertex:
+            continue
+        weight = random.randint(min_weight, max_weight)
+        G.add_edge(src_vertex, dst_vertex, weight)
+        extra_edges -= 1
+
+    return G
+
 g = Graph(5)
 g.add_edge(1,2,5)
 g.add_edge(2,3,5)
 g.add_edge(3,4,5)
 g.add_edge(4,5,5)
 
+g2 = generate_graph(200, 50, 1, 10)
 
-
-print(g.nodes_connected(1,2))
 print(g.is_connected())
-g.print()

@@ -13,7 +13,6 @@ class Graph:
         self.vertices = vertices
         self.adj_list = [None] * vertices
         self.dbg_count = 0
-        self.c = 0
 
     #O(1)
     def add_edge(self, v1, v2, weight):
@@ -24,11 +23,6 @@ class Graph:
         node = EdgeNode(v2, weight)
         node.next = self.adj_list[v1-1]
         self.adj_list[v1-1] = node
-
-        node = EdgeNode(v1, weight)
-        node.next = self.adj_list[v2-1]
-        self.adj_list[v2-1] = node
-        
     # O(V)
     def nodes_connected(self, v1, v2):
         iterator = self.adj_list[v1-1]
@@ -36,7 +30,12 @@ class Graph:
             if iterator.vertex == v2:
                 return True
             iterator = iterator.next
-
+        iterator = self.adj_list[v2-1]
+        while iterator!=None:
+            if iterator.vertex == v1:
+                return True
+            iterator = iterator.next
+        return False
     # O(V) 
     def set_weight(self, v1, v2, weight):
 
@@ -50,24 +49,27 @@ class Graph:
             node = node.next
     
     def dfs(self, vertex, visited, counter):
+        
+        print("DFS for vertex ", vertex)
 
         visited[vertex] = True
-        node = self.adj_list[vertex]
-        while node!=None:
-           
-            if not visited[node.vertex-1]:
-                counter = 1 + self.dfs(node.vertex-1, visited, counter)
-            node = node.next
-        
-        return counter
 
+        node = self.adj_list[vertex]
+
+        while node!=None:
+            if not visited[node.vertex-1]:
+                counter+=1
+                return self.dfs(node.vertex, visited, counter)
+            node = node.next
+
+        return counter == self.vertices
+        
 
     def is_connected_rec(self):
         
         visited = [False] * self.vertices
-        if self.dfs(0,visited, 0) + 1 == self.vertices:
-            return True
-        return False
+
+        return self.dfs(0, visited, 0)
         
     # O(V+E)
     def is_connected(self):
@@ -90,7 +92,8 @@ class Graph:
                 counter += 1
 
         print("Iterations: ", counter)
-        if count == self.vertices:
+        print("Count=", count)
+        if count+1 == self.vertices:
             return True
         return False
 
@@ -131,5 +134,5 @@ g.add_edge(4,5,10)
 g2 = generate_graph(1000, 1000, 1, 10)
 
 print(g.is_connected_rec())
-print("Recursive result: ", g2.is_connected_rec())
 print(g2.is_connected())
+print(g.is_connected())
