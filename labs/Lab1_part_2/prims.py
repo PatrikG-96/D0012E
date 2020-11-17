@@ -1,4 +1,5 @@
 from graph import*
+from heap import*
 import collections
 
 class Edge:
@@ -8,13 +9,15 @@ class Edge:
         self.dst = dst
         self.w = w
 
-def prims_l(G, vertices, start):
+# unsorted list
+
+def prims_l1(G, vertices, start):
 
     lst = []
     added = [False] * vertices
     added[start] = True
 
-    add_neighbours_l(G.adj_list[start], start, lst, added)
+    add_neighbours_l1(G.adj_list[start], start, lst, added)
     g = GraphL(vertices)
     wsum = 0
     while len(lst) > 0:
@@ -26,14 +29,14 @@ def prims_l(G, vertices, start):
             g.add_edge(e.src, e.dst, e.w)
             node = G.adj_list[e.dst]
             wsum += e.w
-            add_neighbours_l(node, e.dst, lst, added)
+            add_neighbours_l1(node, e.dst, lst, added)
             
     print("wsum: ", wsum)
     return g
     
 
 
-def add_neighbours_l(node, src, lst, added):
+def add_neighbours_l1(node, src, lst, added):
 
     while node!=None:
         if not added[node.vertex]:
@@ -41,12 +44,12 @@ def add_neighbours_l(node, src, lst, added):
         node = node.next
 
 
-def prims_m(G, vertices, start):
+def prims_m1(G, vertices, start):
     lst = []
     added = [False] * vertices
     added[start] = True
 
-    add_neighbours_m(G.adj_matrix[start], start, lst, added)
+    add_neighbours_m1(G.adj_matrix[start], start, lst, added)
     g = GraphM(vertices)
     wsum = 0
     while len(lst) > 0:
@@ -58,12 +61,12 @@ def prims_m(G, vertices, start):
             added[e.dst] = True
             g.add_edge(e.src, e.dst, e.w)
             wsum += e.w
-            add_neighbours_m(G.adj_matrix[e.dst], e.dst, lst, added)
+            add_neighbours_m1(G.adj_matrix[e.dst], e.dst, lst, added)
     print("wsum: ", wsum)
     return g
 
 
-def add_neighbours_m(matrix_row, src, lst, added):
+def add_neighbours_m1(matrix_row, src, lst, added):
 
     for i in range(0, len(matrix_row)):
         if matrix_row[i] > 0 and not added[i]:
@@ -89,6 +92,71 @@ def find_min(lst):
             min_index = i
         i += 1
     return min_index
+
+# heap queue
+
+def prims_l(G, vertices, start):
+
+    pq = PriorityQueue(vertices)
+
+    added = [False] * vertices
+    added[start] = True
+    
+    add_neighbours_l(G.adj_list[start], start, pq, added)
+    g = GraphL(vertices)
+    wsum = 0
+
+    while pq.size() > 0:
+        e = pq.pop()
+        edge = e[0]
+        weight = e[1]
+        if not added[edge.dst]:
+            added[edge.dst] = True
+            g.add_edge(edge.src, edge.dst, weight)
+            wsum += weight
+            node = G.adj_list[edge.dst]
+            add_neighbours_l(node, edge.dst, pq, added)
+    print("Wsum: ", wsum)
+    return g
+
+def add_neighbours_l(node, src, pq, added):
+
+    while node!=None:
+        if not added[node.vertex]:
+            pq.push(Edge(src, node.vertex), node.weight)
+        node = node.next
+
+def prims_m(G, vertices, start):
+
+    pq = PriorityQueue(vertices)
+    added = [False] * vertices
+    added[start] = True
+
+    add_neighbours_m(G, start, pq, added)
+    g = GraphM(vertices)
+    wsum = 0
+    while pq.size() > 0:
+        e = pq.pop()
+        edge = e[0]
+        weight = e[1]
+        if not added[edge.dst]:
+            added[edge.dst] = True
+            wsum+=weight
+            g.add_edge(edge.src, edge.dst, weight)
+            add_neighbours_m(G, edge.dst, pq, added)
+    print("wsum = ", wsum)
+    return g
+
+
+def add_neighbours_m(G, src, pq, added):
+
+    matrix = G.adj_matrix
+
+    for i in range(G.vertices):
+        if not added[i] and matrix[src][i] > 0:
+            pq.push(Edge(src, i), matrix[src][i])
+
+    
 
 
 
