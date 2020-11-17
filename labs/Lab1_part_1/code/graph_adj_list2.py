@@ -53,7 +53,6 @@ def generate_graph(vertices, extra_edges, min_weight, max_weight):
     for i in range(2,vertices+1):
         vertex = random.randint(1, vertex_count)
         weight = random.randint(min_weight, max_weight)
-        #print("Creating edge from ", i, " to ", vertex, " with weight ", weight)
         G.add_edge(i, vertex, weight)
         vertex_count += 1
 

@@ -67,15 +67,13 @@ class Heap_max:
     def print(self):
         print(self.heap)
 
-
-
-class PriorityQueue:
-
-    class Element:
+class Element:
 
         def __init__(self, data, w):
             self.data = data
             self.w = w
+
+class PriorityQueue:
 
     def __init__(self, max_size):
         self.max_size = max_size
@@ -83,7 +81,7 @@ class PriorityQueue:
         self.heap_size = 0
         self.heap[0] = Element(None, float('inf'))
 
-    def insert(self, data, w):
+    def push(self, data, w):
         if self.heap_size >= self.max_size:
             return
         e = Element(data, w)
@@ -106,29 +104,40 @@ class PriorityQueue:
             return self.heap[0]
         return None
 
-    def extract_min(self):
+    def pop(self):
         if self.heap_size > 0:
             temp = self.heap[0]
             self.heap[0] = self.heap[self.heap_size-1]
             self.min_heapify(0)
             self.heap_size -= 1
-            return temp
+            return (temp.data, temp.w)
         return None
+
+    def print(self):
+        print("[", end= "")
+        for i in range(self.heap_size):
+            print(self.heap[i].w, end = ", ")
+        print("]")
+
+    def size(self):
+        return self.heap_size
 
     def min_heapify(self, i):
         l = 2 * i + 1
         r = 2 * i + 2
         smallest = 0
         if l < self.heap_size and self.heap[i].w > self.heap[l].w:
+            #print("Left smaller than i, value = ", self.heap[l].w)
             smallest = l
         else:
             smallest = i
-        if r < self.heap_size and self.heap[i].w > self.heap[r].w:
+        if r < self.heap_size and self.heap[smallest].w > self.heap[r].w:
+            #print("Left smaller than i, value = ", self.heap[r].w)
             smallest = r
         if smallest != i:
             temp = self.heap[i]
-            self.heap[i] = self.heap[r]
-            self.heap[r] = temp
+            self.heap[i] = self.heap[smallest]
+            self.heap[smallest] = temp
             self.min_heapify(smallest)
     
 
