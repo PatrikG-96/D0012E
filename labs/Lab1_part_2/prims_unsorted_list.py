@@ -1,57 +1,53 @@
 from graph import*
-from heap import*
 import collections
 import sys
 
-class Edge:
+def find_min(keys, picked):
 
-    def __init__(self, src, dst):
-        self.src = src
-        self.dst = dst
+    minimum = sys.maxsize
+    min_index = 0
+    for i in range(len(keys)):
 
+        if keys[i] < minimum and not picked[i]:
+            minimum = keys[i]
+            min_index = i
+    return min_index
+        
 
+def prims_l(G, vertices, start):
 
-def prims_list(G, vertices, start):
-
-    key = [sys.maxsize] * vertices
+    key = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices
-    pq = PriorityQueue(vertices * (vertices-1))
-    inMST = [False] * vertices
+    inMST = [False] * vertices #n
+    key[0] = 0
 
-    pq.push(start, 0)
-
-    while pq.size() > 0:
-        vertex = pq.pop()[0]
+    for i in range(vertices):
+   
+        vertex = find_min(key, inMST)
 
         inMST[vertex] = True
-
         node = G.adj_list[vertex]
 
         while node!=None:
-        
             if not inMST[node.vertex] and key[node.vertex] > node.weight:
                 key[node.vertex] = node.weight
-                pq.push(node.vertex, node.weight)
                 parent[node.vertex] = vertex
             node = node.next
-    #print_mst(parent, key)
+
     return (parent, key)
+    
 
-
-def prims_matrix(G, vertices, start):
-    key = [sys.maxsize] * vertices
+def prims_m(G, vertices, start):
+    key = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices
-    pq = PriorityQueue(vertices * (vertices-1))
-    inMST = [False] * vertices
+    inMST = [False] * vertices #n
+    key[0] = 0
 
-    pq.push(start, 0)
-
-    while pq.size() > 0:
-
-        vertex = pq.pop()[0]
+    for i in range(vertices):
+   
+        vertex = find_min(key, inMST)
 
         inMST[vertex] = True
-
         matrix_row = G.adj_matrix[vertex]
 
         for i in range(vertices):
@@ -59,11 +55,11 @@ def prims_matrix(G, vertices, start):
             if  weight > 0:
                 if not inMST[i] and key[i] > weight:
                     key[i] = weight
-                    pq.push(i, weight)
                     parent[i] = vertex
-                    
-    #print_mst(parent, key)
+               
     return (parent, key)
+
+
 
 def print_mst(parent, key):
 
@@ -75,8 +71,10 @@ def print_mst(parent, key):
 
 
 
+
 def main():
-    g = GraphM(5)
+
+    g = GraphL(5)
     g.add_edge(0,1,2)
     g.add_edge(0,2,3)
     g.add_edge(1,2,4)
@@ -85,23 +83,22 @@ def main():
     g.add_edge(1,3,8)
     g.add_edge(2,4,5)
 
-    prims_matrix(g, 5, 0)
+    g2 = prims_l(g, g.vertices, 0)
 
-    g = GraphL(5)
-    g.add_edge(0,1,1)
-    g.add_edge(0,2,2)
-    g.add_edge(0,3,3)
-    g.add_edge(0,4,4)
-    g.add_edge(4,3,10)
-    g.add_edge(3,2,10)
-    g.add_edge(2,1,10)
+    print_mst(g2[0], g2[1])
 
-    prims_list(g, 5, 0)
+    g3 = GraphM(5)
+    g3.add_edge(0,1,10)
+    g3.add_edge(0,2,3)
+    g3.add_edge(1,2,4)
+    g3.add_edge(0,3,1)
+    g3.add_edge(1,4,7)
+    g3.add_edge(1,3,8)
+    g3.add_edge(2,4,5)
 
-    g = generate_graph_l(500, 200, 1, 100)
+    g4 = prims_m(g3, g3.vertices, 0)
 
-    t = prims_list(g, g.vertices, 0)
-    print_mst(t[0], t[1])
+    print_mst(g4[0], g4[1])
 
 if __name__=="__main__":
     main()

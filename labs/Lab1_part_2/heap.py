@@ -1,3 +1,4 @@
+import sys
 
 class Heap_max:
 
@@ -67,11 +68,81 @@ class Heap_max:
     def print(self):
         print(self.heap)
 
+
+
 class Element:
 
         def __init__(self, data, w):
             self.data = data
             self.w = w
+
+class MinHeap:
+
+    def __init__(self, size):
+        self.heap = [None] * size
+        self.max_size = size
+        self.heap_size = 0
+        self.indices = [-1] * size
+        self.heap[0] = Element(None, sys.maxsize)
+
+    def insert(self, item, weight):
+        if self.heap_size >= self.max_size:
+            return
+        e = Element(item, weight)
+        self.indices[item] = self.heap_size
+        self.heap[self.heap_size] = e
+        self.reverse_heapify(e, self.heap_size)
+        self.heap_size += 1
+
+    def extract_min(self):
+        if self.heap_size > 0:
+            temp = self.heap[0]
+            self.heap[0] = self.heap[self.heap_size-1]
+            self.min_heapify(0)
+            self.heap_size -= 1
+            return (temp.data, temp.w)
+        return None
+
+    def decreaseWeight(self, vertex, weight):
+        index = self.indices[vertex]
+        element = self.heap[index]
+        element.w = weight
+        self.reverse_heapify(element, index)
+
+    def reverse_heapify(self, e, i):
+        parent = i // 2
+
+        if self.heap[parent].w > e.w:
+            temp = self.heap[parent]
+            self.heap[parent] = e
+            self.heap[i] = temp
+            self.indices[e.data] = parent
+            self.indices[temp.data] = i
+            self.reverse_heapify(e, parent)
+
+    def min_heapify(self, i):
+        l = 2 * i + 1
+        r = 2 * i + 2
+        smallest = 0
+        if l < self.heap_size and self.heap[i].w > self.heap[l].w:
+            smallest = l
+        else:
+            smallest = i
+        if r < self.heap_size and self.heap[smallest].w > self.heap[r].w:
+            smallest = r
+        if smallest != i:
+            temp = self.heap[i]
+            self.heap[i] = self.heap[smallest]
+            self.heap[smallest] = temp
+            self.indices[temp.data] = smallest
+            self.indices[self.heap[smallest].data] = i
+            self.min_heapify(smallest)
+
+    def size(self):
+        return self.heap_size
+
+        
+
 
 class PriorityQueue:
 
@@ -127,12 +198,10 @@ class PriorityQueue:
         r = 2 * i + 2
         smallest = 0
         if l < self.heap_size and self.heap[i].w > self.heap[l].w:
-            #print("Left smaller than i, value = ", self.heap[l].w)
             smallest = l
         else:
             smallest = i
         if r < self.heap_size and self.heap[smallest].w > self.heap[r].w:
-            #print("Left smaller than i, value = ", self.heap[r].w)
             smallest = r
         if smallest != i:
             temp = self.heap[i]

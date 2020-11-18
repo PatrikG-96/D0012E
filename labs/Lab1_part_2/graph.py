@@ -147,8 +147,8 @@ def generate_graph_m(vertices, extra_edges, min_weight, max_weight):
         G.add_edge(i, vertex, weight)
         vertex_count += 1
     while extra_edges >= 0:
-        src_vertex = random.randint(0, vertices)
-        dst_vertex = random.randint(0, vertices)
+        src_vertex = random.randint(0, vertices-1)
+        dst_vertex = random.randint(0, vertices-1)
         if src_vertex == dst_vertex:
             continue
         weight = random.randint(min_weight, max_weight)
