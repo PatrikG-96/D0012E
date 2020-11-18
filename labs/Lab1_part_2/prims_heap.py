@@ -5,7 +5,7 @@ import sys
 import time
 
 
-def prims_list(G, vertices, start):
+def prims_list_h(G, vertices, start):
 
     key = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices        # n
@@ -36,7 +36,7 @@ def prims_list(G, vertices, start):
     return (parent, key)
 
 
-def prims_matrix(G, vertices, start):
+def prims_matrix_h(G, vertices, start):
     key = [sys.maxsize] * vertices
     parent = [-1] * vertices
     inHeap = [True] * vertices

@@ -14,7 +14,7 @@ def find_min(keys, picked):
     return min_index
         
 
-def prims_l(G, vertices, start):
+def prims_l_u(G, vertices, start):
 
     key = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices
@@ -37,7 +37,7 @@ def prims_l(G, vertices, start):
     return (parent, key)
     
 
-def prims_m(G, vertices, start):
+def prims_m_u(G, vertices, start):
     key = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices
     inMST = [False] * vertices #n
