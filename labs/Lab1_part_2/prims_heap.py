@@ -7,7 +7,7 @@ import time
 
 def prims_list_h(G, vertices, start):
 
-    key = [sys.maxsize] * vertices  # n
+    weight = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices        # n
     inHeap = [True] * vertices      # n
 
@@ -28,16 +28,16 @@ def prims_list_h(G, vertices, start):
         # Loop through all adjacent edges to vertex
         while node!=None:
             # If the vertex is still in heap and it's weight is less than current stored weight for that vertex
-            if inHeap[node.vertex] and key[node.vertex] > node.weight:
-                key[node.vertex] = node.weight  # update weight
+            if inHeap[node.vertex] and weight[node.vertex] > node.weight:
+                weight[node.vertex] = node.weight  # update weight
                 parent[node.vertex] = vertex    # set the parent of this vertex as vertex from heap
                 minheap.decreaseWeight(node.vertex, node.weight)  # decrease weight of this vertex in heap
             node = node.next
-    return (parent, key)
+    return (parent, weight)
 
 
 def prims_matrix_h(G, vertices, start):
-    key = [sys.maxsize] * vertices
+    weight = [sys.maxsize] * vertices
     parent = [-1] * vertices
     inHeap = [True] * vertices
 
@@ -57,15 +57,15 @@ def prims_matrix_h(G, vertices, start):
         matrix_row = G.adj_matrix[vertex]
 
         for i in range(vertices):
-            weight = matrix_row[i]
-            if  weight > 0:
-                if inHeap[i] and key[i] > weight:
-                    key[i] = weight
+            v_weight = matrix_row[i]
+            if  v_weight > 0:
+                if inHeap[i] and weight[i] > v_weight:
+                    weight[i] = v_weight
                     parent[i] = vertex
-                    minheap.decreaseWeight(i, weight)
+                    minheap.decreaseWeight(i, v_weight)
                     
     #print_mst(parent, key)
-    return (parent, key)
+    return (parent, weight)
 
 def print_mst(parent, key):
 
@@ -89,7 +89,7 @@ def main():
     g.add_edge(1,3,8)
     g.add_edge(2,4,5)
 
-    t = prims_matrix(g, 5, 0)
+    t = prims_matrix_h(g, 5, 0)
 
     print_mst(t[0], t[1])
 
@@ -103,12 +103,13 @@ def main():
     g.add_edge(2,1,10)
     g.add_edge(1,3,1)
 
-    t = prims_list(g, 5, 0)
+    t = prims_list_h(g, 5, 0)
 
     print_mst(t[0], t[1])
 
 if __name__=="__main__":
     main()
+
 
 
 

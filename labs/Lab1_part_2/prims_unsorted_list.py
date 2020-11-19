@@ -16,48 +16,48 @@ def find_min(keys, picked):
 
 def prims_l_u(G, vertices, start):
 
-    key = [sys.maxsize] * vertices  # n
+    weight = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices
     inMST = [False] * vertices #n
-    key[0] = 0
+    weight[0] = 0
 
     for i in range(vertices):
    
-        vertex = find_min(key, inMST)
+        vertex = find_min(weight, inMST)
 
         inMST[vertex] = True
         node = G.adj_list[vertex]
 
         while node!=None:
-            if not inMST[node.vertex] and key[node.vertex] > node.weight:
-                key[node.vertex] = node.weight
+            if not inMST[node.vertex] and weight[node.vertex] > node.weight:
+                weight[node.vertex] = node.weight
                 parent[node.vertex] = vertex
             node = node.next
 
-    return (parent, key)
+    return (parent, weight)
     
 
 def prims_m_u(G, vertices, start):
-    key = [sys.maxsize] * vertices  # n
+    weight = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices
     inMST = [False] * vertices #n
-    key[0] = 0
+    weight[0] = 0
 
     for i in range(vertices):
    
-        vertex = find_min(key, inMST)
+        vertex = find_min(weight, inMST)
 
         inMST[vertex] = True
         matrix_row = G.adj_matrix[vertex]
 
         for i in range(vertices):
-            weight = matrix_row[i]
-            if  weight > 0:
-                if not inMST[i] and key[i] > weight:
-                    key[i] = weight
+            v_weight = matrix_row[i]
+            if  v_weight > 0:
+                if not inMST[i] and weight[i] > v_weight:
+                    weight[i] = v_weight
                     parent[i] = vertex
                
-    return (parent, key)
+    return (parent, weight)
 
 
 
@@ -83,7 +83,7 @@ def main():
     g.add_edge(1,3,8)
     g.add_edge(2,4,5)
 
-    g2 = prims_l(g, g.vertices, 0)
+    g2 = prims_l_u(g, g.vertices, 0)
 
     print_mst(g2[0], g2[1])
 
@@ -96,7 +96,7 @@ def main():
     g3.add_edge(1,3,8)
     g3.add_edge(2,4,5)
 
-    g4 = prims_m(g3, g3.vertices, 0)
+    g4 = prims_m_u(g3, g3.vertices, 0)
 
     print_mst(g4[0], g4[1])
 

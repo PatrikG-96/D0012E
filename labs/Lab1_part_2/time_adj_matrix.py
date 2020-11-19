@@ -54,7 +54,7 @@ res_hl_1 = time_matrix_heap(10, vertices, extra_edges)
 print("Average time: ", res_hl_1)
 res_ul_1 = time_matrix_unsorted(10, vertices, extra_edges)
 print("Average time: ", res_ul_1)
-vertices = 2000
+vertices = 1000
 extra_edges = 50
 res_hl_2 = time_matrix_heap(10, vertices, extra_edges)
 print("Average time: ", res_hl_2)
@@ -62,10 +62,10 @@ res_ul_2 = time_matrix_unsorted(10, vertices, extra_edges)
 print("Average time: ", res_ul_2)
 print("\n---------------------------------------------------")
 print("Increase from previous benchmark: ")
-print("Heap: ", res_hl_2/res_hl_1 * 100, "%")
-print("Unsorted: ", res_ul_2/res_ul_1 * 100, "%")
+print("Heap: ", res_hl_2/res_hl_1 * 100-100, "%")
+print("Unsorted: ", res_ul_2/res_ul_1 * 100-100, "%")
 print("\n---------------------------------------------------")                                          
-vertices = 2000
+vertices = 1000
 extra_edges = 1000
 res_hl_3 = time_matrix_heap(10, vertices, extra_edges)
 print("Average time: ", res_hl_3)
@@ -73,8 +73,20 @@ res_ul_3 = time_matrix_unsorted(10, vertices, extra_edges)
 print("Average time: ", res_ul_3)
 print("\n---------------------------------------------------")
 print("Increase from previous benchmark: ")
-print("Heap: ", res_hl_3/res_hl_2 * 100, "%")
-print("Unsorted: ", res_ul_3/res_ul_2 * 100, "%")
+print("Heap: ", res_hl_3/res_hl_2 * 100-100, "%")
+print("Unsorted: ", res_ul_3/res_ul_2 * 100-100, "%")
+
+print("\n---------------------------------------------------")        
+vertices = 2000
+extra_edges = 1000
+res_hl_4 = time_matrix_heap(10, vertices, extra_edges)
+print("Average time: ", res_hl_4)
+res_ul_4 = time_matrix_unsorted(10, vertices, extra_edges)
+print("Average time: ", res_ul_4)
+print("\n---------------------------------------------------")
+print("Increase from previous benchmark: ")
+print("Heap: ", res_hl_4/res_hl_3 * 100-100, "%")
+print("Unsorted: ", res_ul_4/res_ul_3 * 100-100, "%")
 print("\n---------------------------------------------------")        
 
 vertices = 60
