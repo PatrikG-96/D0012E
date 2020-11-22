@@ -43,17 +43,14 @@ def prims_matrix_h(G, vertices, start):
 
     minheap = MinHeap(vertices)     # n
     minheap.insert(0,0)             # insert starting vertex with weight 0, represents initial choice
-
     # Insert other vertices with a temporary max value as weight
     for i in range(1,vertices):
         minheap.insert(i, sys.maxsize)
-
+        
     while minheap.size() > 0:
 
         vertex = minheap.extract_min()[0]
-
         inHeap[vertex] = False
-
         matrix_row = G.adj_matrix[vertex]
 
         for i in range(vertices):
@@ -63,9 +60,11 @@ def prims_matrix_h(G, vertices, start):
                     key[i] = weight
                     parent[i] = vertex
                     minheap.decreaseWeight(i, weight)
-                    
+        
     #print_mst(parent, key)
     return (parent, key)
+
+
 
 def print_mst(parent, key):
 
@@ -89,7 +88,7 @@ def main():
     g.add_edge(1,3,8)
     g.add_edge(2,4,5)
 
-    t = prims_matrix(g, 5, 0)
+    t = prims_matrix_h(g, 5, 0)
 
     print_mst(t[0], t[1])
 
@@ -103,7 +102,7 @@ def main():
     g.add_edge(2,1,10)
     g.add_edge(1,3,1)
 
-    t = prims_list(g, 5, 0)
+    t = prims_list_h(g, 5, 0)
 
     print_mst(t[0], t[1])
 

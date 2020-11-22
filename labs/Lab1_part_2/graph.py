@@ -13,6 +13,8 @@ class GraphL:
     def __init__(self, vertices):
         self.vertices = vertices
         self.adj_list = [None] * vertices
+        self.edges = 0
+        self.max_edges = vertices * (vertices-1) / 2
 
     def add_edge(self, v1, v2, weight):
 
@@ -26,6 +28,7 @@ class GraphL:
         node = EdgeNode(v1, weight)
         node.next = self.adj_list[v2]
         self.adj_list[v2] = node
+        self.edges += 1
 
     def nodes_connected(self, v1, v2):
         iterator = self.adj_list[v1]
@@ -84,6 +87,8 @@ class GraphM:
     def __init__(self, vertices):
         self.adj_matrix = [[0 for i in range(vertices)] for j in range(vertices)]
         self.vertices = vertices
+        self.edges = 0
+        self.max_edges = vertices * (vertices-1) / 2
     
 
     def add_edge(self, v1, v2, weight):
@@ -92,6 +97,7 @@ class GraphM:
 
         self.adj_matrix[v1][v2] = weight
         self.adj_matrix[v2][v1] = weight
+        self.edges += 1
 
     def set_weight(self, v1, v2, weight):
         self.adj_matrix[v1][v2] = weight
@@ -119,40 +125,5 @@ class GraphM:
 
         return count == self.vertices
 
-def generate_graph_l(vertices, extra_edges, min_weight, max_weight):
-    G = GraphL(vertices)
-    vertex_count = 0
-    for i in range(1,vertices):
-        vertex = random.randint(0, vertex_count)
-        weight = random.randint(min_weight, max_weight)
-        G.add_edge(i, vertex, weight)
-        vertex_count += 1
-    while extra_edges >= 0:
-        src_vertex = random.randint(0, vertices-1)
-        dst_vertex = random.randint(0, vertices-1)
-        if src_vertex == dst_vertex:
-            continue
-        weight = random.randint(min_weight, max_weight)
-        G.add_edge(src_vertex, dst_vertex, weight)
-        extra_edges -= 1
 
-    return G
 
-def generate_graph_m(vertices, extra_edges, min_weight, max_weight):
-    G = GraphM(vertices)
-    vertex_count = 0
-    for i in range(1,vertices):
-        vertex = random.randint(0, vertex_count)
-        weight = random.randint(min_weight, max_weight)
-        G.add_edge(i, vertex, weight)
-        vertex_count += 1
-    while extra_edges >= 0:
-        src_vertex = random.randint(0, vertices-1)
-        dst_vertex = random.randint(0, vertices-1)
-        if src_vertex == dst_vertex:
-            continue
-        weight = random.randint(min_weight, max_weight)
-        G.add_edge(src_vertex, dst_vertex, weight)
-        extra_edges -= 1
-
-    return G
