@@ -7,7 +7,7 @@ import time
 
 def prims_list_h(G, vertices, start):
 
-    weight = [sys.maxsize] * vertices  # n
+    key = [sys.maxsize] * vertices  # n
     parent = [-1] * vertices        # n
     inHeap = [True] * vertices      # n
 
@@ -28,16 +28,16 @@ def prims_list_h(G, vertices, start):
         # Loop through all adjacent edges to vertex
         while node!=None:
             # If the vertex is still in heap and it's weight is less than current stored weight for that vertex
-            if inHeap[node.vertex] and weight[node.vertex] > node.weight:
-                weight[node.vertex] = node.weight  # update weight
+            if inHeap[node.vertex] and key[node.vertex] > node.weight:
+                key[node.vertex] = node.weight  # update weight
                 parent[node.vertex] = vertex    # set the parent of this vertex as vertex from heap
                 minheap.decreaseWeight(node.vertex, node.weight)  # decrease weight of this vertex in heap
             node = node.next
-    return (parent, weight)
+    return (parent, key)
 
 
 def prims_matrix_h(G, vertices, start):
-    weight = [sys.maxsize] * vertices
+    key = [sys.maxsize] * vertices
     parent = [-1] * vertices
     inHeap = [True] * vertices
 
@@ -54,20 +54,15 @@ def prims_matrix_h(G, vertices, start):
         matrix_row = G.adj_matrix[vertex]
 
         for i in range(vertices):
-            v_weight = matrix_row[i]
-            if  v_weight > 0:
-                if inHeap[i] and weight[i] > v_weight:
-                    weight[i] = v_weight
+            weight = matrix_row[i]
+            if  weight > 0:
+                if inHeap[i] and key[i] > weight:
+                    key[i] = weight
                     parent[i] = vertex
-<<<<<<< HEAD
                     minheap.decreaseWeight(i, weight)
         
-=======
-                    minheap.decreaseWeight(i, v_weight)
-                    
->>>>>>> 5721677ad291964c7a11a8ec4f2257e2f73e30c3
     #print_mst(parent, key)
-    return (parent, weight)
+    return (parent, key)
 
 
 
@@ -113,7 +108,6 @@ def main():
 
 if __name__=="__main__":
     main()
-
 
 
 

@@ -40,7 +40,6 @@ def time_list_unsorted(g, iterations):
     return time_sum/iterations
 
 
-<<<<<<< HEAD
 # Testing with increasing amount of vertices and edges, doubling each iteration
 def test_ve(v_start, e_start, iterations):
     vertices = v_start
@@ -107,55 +106,6 @@ def full_test(vertices):
     res_u = time.time() * 1000 - before
 
     print("Heap: ", res_h, ", Unsorted list: ", res_u)
-=======
-vertices = 200
-extra_edges = 50
-res_hl_1 = time_list_heap(10, vertices, extra_edges)
-print("Average time: ", res_hl_1)
-res_ul_1 = time_list_unsorted(10, vertices, extra_edges)
-print("Average time: ", res_ul_1)
-vertices = 1000
-extra_edges = 50
-res_hl_2 = time_list_heap(10, vertices, extra_edges)
-print("Average time: ", res_hl_2)
-res_ul_2 = time_list_unsorted(10, vertices, extra_edges)
-print("Average time: ", res_ul_2)
-print("\n---------------------------------------------------")
-print("Increase from previous benchmark: ")
-print("Heap: ", res_hl_2/res_hl_1 * 100 - 100, "%")
-print("Unsorted: ", res_ul_2/res_ul_1 * 100 - 100, "%")
-print("\n---------------------------------------------------")                                          
-vertices = 1000
-extra_edges = 1000
-res_hl_3 = time_list_heap(10, vertices, extra_edges)
-print("Average time: ", res_hl_3)
-res_ul_3 = time_list_unsorted(10, vertices, extra_edges)
-print("Average time: ", res_ul_3)
-print("\n---------------------------------------------------")
-print("Increase from previous benchmark: ")
-print("Heap: ", res_hl_3/res_hl_2 * 100-100, "%")
-print("Unsorted: ", res_ul_3/res_ul_2 * 100-100, "%")
-print("\n---------------------------------------------------")
-vertices = 2000
-extra_edges = 1000
-res_hl_4 = time_list_heap(10, vertices, extra_edges)
-print("Average time: ", res_hl_4)
-res_ul_4 = time_list_unsorted(10, vertices, extra_edges)
-print("Average time: ", res_ul_4)
-print("\n---------------------------------------------------")
-print("Increase from previous benchmark: ")
-print("Heap: ", res_hl_4/res_hl_3 * 100-100, "%")
-print("Unsorted: ", res_ul_4/res_ul_3 * 100-100, "%")
-print("\n---------------------------------------------------")        
-
-
-vertices = 60
-extra_edges = vertices * (vertices - 1) - vertices
-res_hl_4 = time_list_heap(10, vertices, extra_edges)
-print("Average time: ", res_hl_4)
-res_ul_4 = time_list_unsorted(10, vertices, extra_edges)
-print("Average time: ", res_ul_4)
->>>>>>> 5721677ad291964c7a11a8ec4f2257e2f73e30c3
 
 def main():
 
