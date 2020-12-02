@@ -59,13 +59,8 @@ def prims_matrix_h(G, vertices, start):
                 if inHeap[i] and weight[i] > v_weight:
                     weight[i] = v_weight
                     parent[i] = vertex
-<<<<<<< HEAD
-                    minheap.decreaseWeight(i, weight)
-        
-=======
                     minheap.decreaseWeight(i, v_weight)
-                    
->>>>>>> 5721677ad291964c7a11a8ec4f2257e2f73e30c3
+
     #print_mst(parent, key)
     return (parent, weight)
 
