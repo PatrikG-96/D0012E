@@ -20,7 +20,6 @@ def maxp_dac(arr):
 
 def cross_mult(arr, mid):
 
-    print("Cross mult for arr: ", arr, " with mid as ", mid)
     p = 1
     right_max = left_max = -sys.maxsize
     right_min = left_min = sys.maxsize
