@@ -12,34 +12,32 @@ class counter:
     def increment(self, val=1):
         self.counter += val
 
-def min3(arr):
-    count = counter()
+def min3(arr, count):
     min_elements = arr[0:3] #O(1)
+    insertion_sort(min_elements, count) #O(1), size of min_elements is constant
     if len(arr) == 3:       #O(1)
-        insertion_sort(min_elements) #O(1), size of min_elements is constant
         return min_elements
     count.increment()
     for i in range(3, len(arr)):     #O(n)
-        count.increment(2)
+        count.increment(1)
         if arr[i] < min_elements[2]: #O(1) 
             min_elements[2] = arr[i] #O(1)
             insertion_sort(min_elements, count)  #O(1)
     
     #print(count.counter)
-    return (min_elements[0:3], count.counter)
+    return min_elements[0:3]
 
 
 def insertion_sort(arr, count):
     for i in range(len(arr)): #3
-        count.increment(3)
+        count.increment(1)
         val = arr[i]
         j = i-1
         while i > 0 and val < arr[i-1]: #
             swap(arr, i, i-1)
+            count.increment(1)
             i-=1
-        while j >= 0:
-            count.increment(2)
-            j-=1
+        
 
         
 
@@ -49,25 +47,43 @@ def swap(arr, i, j):
     arr[j] = t
 
 lst = [1,2,3,4,5,6,7,8]
-lst1 = [20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]
+
 lst3 = [random.randint(1,1000) for i in range(10)]
 
-print(min3(lst))
+#print(min3(lst))
 
 
-print(min3(lst1))
+#print(min3(lst1))
 
-print(min3(lst3))
-counters = 0
-for i in range(10000):
-    
-    c = min3(lst1)[1]
-    if not (2*(len(lst1)-3)+1 <= c <= 17*(len(lst1)-3)):
-        print("shit, ", c)
-        counters += 1
-    lst1 = [random.randint(1,10) for i in range(20)]
-print("Fails: ", counters)
-#2(n-3)+1 < c < 8(n-3)+1
+#print(min3(lst3))
+##counters = 0
+##count = counter()
+##for i in range(1000):
+##    lst1 = [random.randint(1,10) for i in range(10)]
+##    c = min3(lst1, count)
+##    print(len(lst1)+1, " <= ",  count.counter, " <= ", 6*(len(lst1)-2))
+##    if not (len(lst1)+1 <= count.counter <= 6*(len(lst1)-2)):
+##        print("shit, ", len(lst1)+1, " <= ",  count.counter, " <= ", 6*(len(lst1)-2))
+##        counters += 1
+##    
+##    count.reset()
+##print("Fails: ", counters)
+
+count = counter()
+avg = []
+m = []
+for i in range(10, 500+1, 10):
+    sum_ = 0
+    m.append(i)
+    for j in range(10):
+        lst = [random.randint(1,1000) for k in range(i)]
+        min3(lst, count)
+        sum_ += count.counter
+        count.reset()
+    avg.append(sum_/10)
+
+for k in range(len(m)):
+    print(avg[k])
 
 
 #Base case: n=3 
